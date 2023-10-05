@@ -1,0 +1,107 @@
+1a. A method that returns the sum of two integers
+
+Given two integers
+-Add them together and return them
+
+1b. 
+
+START
+Return num1 + num2
+END
+------------------------------------
+
+2a. A method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+Given an array of strings
+- Create an empty string
+- For each string in the array add them to the empty string
+- After iterating through the array return the concatenated string
+
+2b.
+
+START
+SET string = ""
+EACH of the strings in array DO string + strings[I]
+Return string
+END
+-------------------------------------
+
+3a. A method that takes an array of integers, and returns a new array with every other element from the original array, starting with the first element. 
+
+Given an array of integers
+- Create and empty array
+- iterate through all elements of the array and add them to the empty if they are even.
+- return the array
+
+
+3b. 
+
+START
+SET ints = []
+ints = MAP the integer array IF int[I] % 2
+Return ints
+END
+--------------------------------------
+
+4a. a method that determines the index of the 3rd occurrence of a given character in a string. For instance, if the given character is 'x' and the string is 'axbxcdxex', the method should return 6 (the index of the 3rd 'x'). If the given character does not occur at least 3 times, return nil.
+
+Given a character and a string
+- Create an integer equal to zero
+- Create an array that is the string split into individual characters
+- Iterate through the array and see if the element is equal to the given character
+- If it is equal add to the integer
+- If the integer is less than 3 return nil
+- If not then return the integer
+
+4b.
+START
+SET int = 0
+SET chars = string split
+EACH chars 
+  IF chars[I] = given character
+    Int +=1
+IF int < 3 return nil
+ELSE return int
+END
+--------------------------------------
+
+5a. A method that takes two arrays of numbers and returns the result of merging the arrays. The elements of the first array should become the elements at the even indexes of the returned array, while the elements of the second array should become the elements at the odd indexes.
+
+Given two arrays of numbers 
+
+- Create an empty array
+- Find the larger array
+- Iterate through the arrays using the larger size of the arrays
+- Take the element of the first array and add it to the empty array and then take the element of the second array and add it to the empty array
+- return the new array
+
+5b.
+START
+SET array = []
+SET int = larger of the two arrays
+EACH 0..int-1
+  Array.push array1[I] if < array1.size
+  Array.push array2[I] if < array2.size
+Return array
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
