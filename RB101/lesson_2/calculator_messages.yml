@@ -1,0 +1,7 @@
+
+welcome: "Welcome to calculator! Enter your name:"
+valid_name: "Make sure you enter a valid name."
+valid_number: "You didn't input a valid number"
+choose_operation: "What operation would you like to perform(add, subtract, multiply or divide):"
+invalid_operation: "You did not type a valid operation"
+another_operation: "Do you want to perform another calculation?(Y to go again)"

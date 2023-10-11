@@ -1,9 +1,12 @@
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   puts "=> #{message}"
 end
 
 def valid_number?(num)
-  num.to_i != 0
+  (num.to_i.to_s == num || num.to_f.to_s == num)
 end
 
 def operation_to_message(op)
@@ -19,12 +22,12 @@ def operation_to_message(op)
   end
 end
 
-prompt("Welcome to calculator! Enter your name: ")
+prompt(MESSAGES['welcome'])
 name = ''
 loop do
   name = gets.chomp
   if name.empty?()
-    prompt("Make sure you enter a valid name.")
+    prompt(MESSAGES['valid_name'])
   else
     break
   end
@@ -37,35 +40,36 @@ loop do # main loop
   number1 = ''
   loop do
     prompt("Give a number")
-    number1 = gets.chomp.to_i
-    if valid_number?(number1)
+    number1_string = gets.chomp
+    number1 = number1_string.to_i
+    if valid_number?(number1_string)
       break
     else
-      prompt("You didn't input a valid number")
+      prompt(MESSAGES['valid_number'])
     end
   end
 
   number2 = ''
   loop do
     prompt("Give me a second number")
-    number2 = gets.chomp.to_i
-    if valid_number?(number2)
+    number2_string = gets.chomp
+    number2 = number2_string.to_i
+    if valid_number?(number2_string)
       break
     else
-      prompt("You didn't input a valid number")
+      prompt(MESSAGES['valid_number'])
     end
   end
 
   # Asks for the type of operation to perform: add, subtract, multiply or divide
-  prompt("What operation would you like to perform
-    (add, subtract, multiply or divide):")
+  prompt(MESSAGES['choose_operation'])
   operation = ''
   loop do
     operation = gets.chomp
     if ['add', 'subtract', 'multiply', 'divide'].include?(operation)
       break
     else
-      prompt("You did not type a valid operation")
+      prompt(MESSAGES['invalid_operation'])
     end
   end
 
@@ -75,13 +79,13 @@ loop do # main loop
   result = case operation
            when "add" then number1 + number2
            when "subtract" then number1 - number2
-           when "mulitply" then number1 * number2
+           when "multiply" then number1 * number2
            when "divide" then number1.to_f / number2.to_f
            end
 
   prompt("The result is #{result}")
 
-  prompt("Do you want to perform another calculation?(Y to go again)")
+  prompt(MESSAGES['another_operation'])
   answer = gets.chomp
   break unless answer.downcase().start_with?('y')
 end
