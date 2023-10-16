@@ -1,13 +1,16 @@
-VALID_CHOICES = %w(rock paper scissors)
+VALID_CHOICES = %w(rock paper scissors spock lizard)
+WINNERS = { "rock" => ['scissors', 'lizard'],
+            "paper" => ['rock', 'spock'],
+            "scissors" => ['lizard', 'paper'],
+            "lizard" => ['spock', 'paper'],
+            "spock" => ['scissors', 'rock'] }
 
 def prompt(message)
   puts "=> #{message}"
 end
 
 def win?(first, second)
-  (first == 'rock' && second == 'scissors') ||
-    (first == 'paper' && second == 'rock') ||
-    (first == 'scissors' && second == 'paper')
+  WINNERS[first].include?(second)
 end
 
 def display_results(player, computer)
@@ -21,6 +24,8 @@ def display_results(player, computer)
 end
 
 choice = ''
+player_points = 0
+computer_points = 0
 loop do
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}")
@@ -36,10 +41,19 @@ loop do
   prompt("You chose #{choice}. Computer chose #{computer_choice}.")
 
   display_results(choice, computer_choice)
+  player_points += 1 if win?(choice, computer_choice)
+  computer_points += 1 if win?(computer_choice, choice)
 
-  prompt("Would you like to play again?(y/n)")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  if player_points >= 3
+    prompt("You are the grand winner!")
+    break
+  elsif computer_points >= 3
+    prompt("The computer is the grand winner!")
+    break
+  end
+  # prompt("Would you like to play again?(y/n)")
+  # answer = gets.chomp
+  # break unless answer.downcase.start_with?('y')
 end
 
 prompt("Thanks for playing! Goodbye.")
