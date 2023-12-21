@@ -67,7 +67,6 @@ def display_results(p_sum, d_sum)
   end
 end
 
-
 def main()
   deck = initialize_deck
   player_hand = [deck.pop, deck.pop]
