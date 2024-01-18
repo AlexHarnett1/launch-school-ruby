@@ -1,28 +1,71 @@
+class Move
+  VALUES = ['rock', 'paper', 'scissors']
+  def initialize(value)
+    @value = value
+  end
+
+  def scissors?
+    @value == 'scissors'
+  end
+
+  def rock?
+    @value == 'rock'
+  end
+
+  def paper?
+    @value == 'paper'
+  end
+
+  def >(other_move)
+    (rock? && other_move.scissors?) ||
+      (paper? && other_move.rock?) ||
+      (scissors? && other_move.paper?)
+  end
+
+  def to_s
+    @value
+  end
+end
+
 class Player
-  attr_accessor :move
-  
-  def initialize(player_type = :human)
-    @player_type = player_type
-    @move = nil
+  attr_accessor :move, :name
+
+  def initialize
+    set_name
+  end
+end
+
+class Computer < Player
+  def set_name
+    self.name = ['R2D2', 'Hal', "Chappy", 'Sunny', 'Number 5'].sample
   end
 
   def choose
-    if human?
-      choice = nil
-      loop do 
-        puts "Choose an option: Rock, Paper, or Scissors"
-        choice = gets.chomp
-        break if ['rock', 'paper', 'scissors'].include?(choice)
-        puts "Sorry, invalid choice."
-      end
-      self.move = choice
-    else
-      self.move = ['rock', 'paper', 'scissors'].sample
+    self.move = Move.new(Move::VALUES.sample)
+  end
+end
+
+class Human < Player
+  def set_name
+    n = ''
+    loop do
+      puts "What's your name?"
+      n = gets.chomp
+      break unless n.empty?
+      puts "Sorry, must enter a value."
     end
+    self.name = n
   end
 
-  def human?
-    @player_type == :human
+  def choose
+    choice = nil
+    loop do
+      puts "Choose an option: rock, paper, or scissors"
+      choice = gets.chomp
+      break if Move::VALUES.include?(choice)
+      puts "Sorry, invalid choice."
+    end
+    self.move = Move.new(choice)
   end
 end
 
@@ -30,8 +73,8 @@ class RPSGame
   attr_accessor :human, :computer
 
   def initialize
-    @human = Player.new
-    @computer = Player.new(:computer)
+    @human = Human.new
+    @computer = Computer.new
   end
 
   def display_welcome_message
@@ -45,27 +88,21 @@ class RPSGame
   def display_winner
     puts "You chose #{human.move}"
     puts "The computer chose #{computer.move}"
-    case human.move
-    when 'rock'
-      puts "It's a tie!" if computer.move == 'rock'
-      puts "Computer wins!" if computer.move == 'paper'
-      puts "You win!" if computer.move == 'scissors'
-    when 'paper'
-      puts "It's a tie!" if computer.move == 'paper'
-      puts "Computer wins!" if computer.move == 'scissors'
-      puts "You win!" if computer.move == 'rock'
-    when 'scissors'
-      puts "It's a tie!" if computer.move == 'scissors'
-      puts "Computer wins!" if computer.move == 'rock'
-      puts "You win!" if computer.move == 'paper'
+
+    if human.move > computer.move
+      puts "#{human.name} won!"
+    elsif computer.move > human.move
+      puts "#{computer.name} won!"
+    else
+      puts "It's a tie!"
     end
   end
 
   def play_again?
     answer = nil
-    loop do 
+    loop do
       puts "Would you like to play again (y/n)?"
-      answer= gets.chomp
+      answer = gets.chomp
       break if ['y', 'n'].include?(answer.downcase)
       puts "Sorry, must be y or n"
     end
