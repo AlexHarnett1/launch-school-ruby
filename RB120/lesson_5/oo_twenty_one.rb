@@ -1,71 +1,57 @@
+require "pry"
+
 class Participant
   attr_accessor :cards
+
   def initialize
     @cards = []
   end
 
-  def hit
-  end
-
-  def stay
-  end
-
-  def busted?
-  end
-
-  def total
-  end
-end
-
-class Player < Participant
-
-  def initialize
-    # what would the "data" or "states" of a Player object entail?
-    # maybe cards? a name?
-  end
-
-  def hit
-  end
-
-  def stay
+  def hit(card)
+    cards << card
   end
 
   def busted?
+    total > 21
   end
 
   def total
-    # definitely looks like we need to know about "cards" to produce some total
+    tot = 0
+    ace = false
+    cards.each do |card|
+      if card.number.to_i == card.number
+        tot += card.number
+      elsif card.number == 'A'
+        ace = true
+        tot += 1
+      else
+        tot += 10
+      end
+    end
+    tot += 10 if ace && (tot + 10) <= 21
+    tot
   end
-end
-
-class Dealer < Participant
-  def initialize
-    # seems like very similar to Player... do we even need this?
-  end
-
 end
 
 class Deck
   attr_accessor :cards
+
+  SUITS = ["Diamonds", "Hearts", "Clubs", "Spades"]
+
   def initialize
     @cards = []
     shuffle
   end
 
-  def deal
-    # does the dealer or the deck deal?
-  end
-
   def shuffle
-    suits = ["Diamonds", "Hearts", "Clubs", "Spades"]
     4.times do |value|
-      @cards.push(Card.new(suits[value], "A"))
+      @cards.push(Card.new(SUITS[value], "A"))
       (2..10).each do |num|
-        @cards.push(Card.new(suits[value], num))
+        @cards.push(Card.new(SUITS[value], num))
       end
-      @cards.push(Card.new(suits[value], "J"))
-      @cards.push(Card.new(suits[value], "Q"))
-      @cards.push(Card.new(suits[value], "K"))
+      @cards.push(Card.new(SUITS[value], "J"))
+      @cards.push(Card.new(SUITS[value], "Q"))
+      @cards.push(Card.new(SUITS[value], "K"))
     end
     @cards.shuffle!
   end
@@ -80,6 +66,8 @@ class Deck
 end
 
 class Card
+  attr_reader :number
+
   def initialize(suit, number)
     # what are the "states" of a card?
     @suit = suit
@@ -89,14 +77,14 @@ class Card
   def to_s
     "#{@number} of #{@suit}"
   end
-
 end
 
 class Game
   attr_accessor :player, :dealer, :deck
+
   def initialize
-    @player = Player.new
-    @dealer = Dealer.new
+    @player = Participant.new
+    @dealer = Participant.new
     @deck = Deck.new
   end
 
@@ -104,9 +92,10 @@ class Game
     deal_cards
     show_initial_cards
     player_turn
-    # dealer_turn
-    # show_result
-    
+    if player.total <= 21
+      dealer_turn
+    end
+    show_result
   end
 
   def deal_cards
@@ -115,18 +104,50 @@ class Game
   end
 
   def show_initial_cards
-    puts "Player has #{player.cards[0]} and #{player.cards[1]}"
+    puts "Player has #{player.cards[0]} and #{player.cards[1]}. Your total is #{player.total}"
     puts "Dealer shows #{dealer.cards[0]}"
+  end
+
+  def show_player_last_card_dealt
+    puts "Player dealt #{player.cards.last}. Your total is #{player.total}"
+  end
+
+  def show_dealer_last_card_dealt
+    puts "Dealer dealt #{dealer.cards.last}. Their total is #{dealer.total}"
   end
 
   def player_turn
     loop do
       puts "Would you like to hit or stay?"
       response = gets.chomp
-      
-
+      if response[0].downcase == 'h'
+        player.hit(deck.cards.pop)
+        show_player_last_card_dealt
+      end
+      break if player.busted?
       break if response[0].downcase == 's'
-      
+    end
+  end
+
+  def dealer_turn
+    puts "Dealer has #{dealer.cards[0]} and #{dealer.cards[1]}"
+    loop do
+      break if dealer.total >= 17
+      puts "Dealer hits"
+      dealer.hit(deck.cards.pop)
+      show_dealer_last_card_dealt
+    end
+  end
+
+  def show_result
+    if dealer.busted?
+      puts "Dealer busted. Congrats, you won!"
+    elsif player.busted?
+      puts "You busted, you lose!"
+    elsif player.total == dealer.total
+      puts "It's a push!"
+    else
+      puts "#{dealer.total < player.total ? 'Player' : 'Dealer'} won!"
     end
   end
 end
