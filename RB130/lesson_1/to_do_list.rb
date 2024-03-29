@@ -51,11 +51,12 @@ class TodoList
 
   # rest of class needs implementation
 
-  def add(todo)
+  def <<(todo)
     raise TypeError, 'can only add Todo objects' unless todo.instance_of? Todo
 
     @todos << todo
   end
+  alias_method :add, :<<
 
   def size
     @todos.size
@@ -78,11 +79,11 @@ class TodoList
   end
 
   def item_at(index)
-    @todos[index]
+    @todos.fetch(index)
   end
 
   def mark_done_at(index)
-    @todos[index].done!
+    item_at(index).done!
   end
 
   def mark_undone_at(index)
@@ -102,13 +103,28 @@ class TodoList
   end
 
   def remove_at(index)
-    @todos.delete_at(index)
+    @todos.delete(item_at(index))
   end 
 
   def to_s
     str = " ---- Today's Todos ----\n"
     @todos.each {|val| str += val.to_s + "\n"}
     str
+  end
+
+  def each
+    @todos.each do |todo|
+      yield(todo)
+    end
+    self
+  end
+
+  def select
+    newtodos = TodoList.new("New List")
+    @todos.each do |todo|
+      newtodos.add(todo) if yield(todo)
+    end
+    newtodos
   end
 
 end

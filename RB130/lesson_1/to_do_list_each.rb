@@ -126,6 +126,41 @@ class TodoList
     newtodos
   end
 
+  def find_by_title(str)
+    each do |todo|
+      return todo if todo.title == str
+    end
+    nil
+  end
+
+  def all_done
+    select do |todo|
+      todo.done?
+    end
+  end
+
+  def all_not_done
+    select do |todo|
+      !todo.done?
+    end
+  end
+
+  def mark_done(str)
+    find_by_title(str).done!
+  end
+
+  def mark_all_done
+    each do |todo|
+      todo.done!
+    end
+  end
+
+  def mark_all_undone
+    each do |todo|
+      todo.undone!
+    end
+  end
+
 end
 
 
@@ -147,3 +182,7 @@ todo1.done!
 results = list.select { |todo| todo.done? }    # you need to implement this method
 
 puts results.inspect
+
+p list.find_by_title("Buy milk")
+
+p list.all_done
