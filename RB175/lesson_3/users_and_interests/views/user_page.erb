@@ -1,0 +1,12 @@
+<h1><%=@username.capitalize%></h1>
+<p>Email: <%=@user[:email]%></p>
+<p>Interests: <%=@user[:interests].join(", ")%> </p>
+
+<ul>
+  <%@user_data.each do |key, value|%>
+    <%if value != @user%>
+      <li> <a href="/<%=key%>"> <%=key.capitalize%> </a> </li>
+    <%end%>
+  <%end%>
+  
+</ul>

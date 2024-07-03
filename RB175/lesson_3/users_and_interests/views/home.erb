@@ -1,0 +1,8 @@
+<body>
+  <ul>
+    <%@user_data.each do |key, value|%>
+      <li> <a href="/<%=key%>"> <%=key.capitalize%> </a> </li>
+    <%end%>
+    
+  </ul>
+</body>
