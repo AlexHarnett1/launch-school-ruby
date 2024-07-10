@@ -1,0 +1,14 @@
+<form action = "/<%=@file_name%>" method="post">
+  <dl>
+    <dt>
+      <label for="edit_content">Edit the content of <%=@file_name%>:</label>
+    </dt>
+    <dd>
+      <textarea name="edit_content" type="text" rows="20" cols="100"><%=@content%></textarea>
+    </dd>
+  </dl>
+  <fieldset class="actions">
+    <input type="submit" value="Save">
+    <a href="/">Cancel</a>
+  </fieldset>
+</form>
