@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <title>Contacts</title>
+  <link rel="stylesheet" href="/contact_list.css" type="text/css">
+  <body>
+    <%if session[:message]%>
+      <p class="message"><%=session.delete(:message)%></p>
+    <%end%>
+    <%=yield%>
+  </body>
+</html>
