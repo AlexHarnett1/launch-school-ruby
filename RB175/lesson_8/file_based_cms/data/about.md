@@ -1,3 +1,0 @@
-# Ruby is...
-# Another header
-An object oriented programming language that has elegant syntax and is simple to write.
