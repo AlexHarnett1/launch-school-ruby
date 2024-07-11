@@ -1,0 +1,36 @@
+<body>
+
+  <h2>Contact List</h2>
+  <h4><a href="/new">Add new</a></h4>
+  <table>
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+          </tr>
+      </thead>
+      <tbody>
+        <%session[:contacts].each_with_index do |contact, index|%>
+          <tr>
+            <td><%=contact[:name]%></td>
+            <td><%=contact[:number]%></td>
+            <td><%=contact[:email]%></td>
+            <td class="delete">
+              <form action = "/delete" method="post">
+                <input type="hidden" name="id" value=<%=index%> >
+                <input type="submit" value="Delete">
+              </form>
+            </td>
+          </tr>
+        <%end%>
+      </tbody>
+  </table>
+
+
+  <ul>
+    <%session[:contacts].each do |contact|%>
+      <li><%=contact[:number]%></li>
+    <%end%>
+  </ul>
+</body>
