@@ -8,17 +8,22 @@
               <th>Name</th>
               <th>Phone Number</th>
               <th>Email</th>
+              <th class="table_button">
+                <form action = "/sort" method="post">
+                  <input type="submit" value="Sort <%=next_sort_type%>ly">
+                </form> 
+              </th>
           </tr>
       </thead>
       <tbody>
-        <%session[:contacts].each_with_index do |contact, index|%>
+        <%sort_contacts(session[:contacts]).each do |contact|%>
           <tr>
             <td><%=contact[:name]%></td>
             <td><%=contact[:number]%></td>
             <td><%=contact[:email]%></td>
-            <td class="delete">
+            <td class="table_button">
               <form action = "/delete" method="post">
-                <input type="hidden" name="id" value=<%=index%> >
+                <input type="hidden" name="id" value=<%=contact[:id]%> >
                 <input type="submit" value="Delete">
               </form>
             </td>
@@ -26,11 +31,3 @@
         <%end%>
       </tbody>
   </table>
-
-
-  <ul>
-    <%session[:contacts].each do |contact|%>
-      <li><%=contact[:number]%></li>
-    <%end%>
-  </ul>
-</body>

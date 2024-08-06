@@ -13,9 +13,9 @@ th {
   background: #FFFF99;
 }
 
-.delete {
+.table_button {
   border: 0px solid black;
   padding: 8px;
   text-align: left;
-
+  background-color: #ffffff;
 }
