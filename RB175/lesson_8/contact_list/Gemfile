@@ -8,5 +8,6 @@ gem "rubocop"
 
 gem "rack-test"
 gem "minitest"
+gem "pg"
 
 gem "rackup", "~> 2.1"

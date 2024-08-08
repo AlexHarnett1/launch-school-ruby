@@ -16,10 +16,10 @@
           </tr>
       </thead>
       <tbody>
-        <%sort_contacts(session[:contacts]).each do |contact|%>
+        <%sort_contacts(@contacts).each do |contact|%>
           <tr>
             <td><%=contact[:name]%></td>
-            <td><%=contact[:number]%></td>
+            <td><%=contact[:phone_number]%></td>
             <td><%=contact[:email]%></td>
             <td class="table_button">
               <form action = "/delete" method="post">
